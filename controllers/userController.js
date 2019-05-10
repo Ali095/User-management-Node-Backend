@@ -21,7 +21,7 @@ module.exports = class UserControllers {
     }
 
     async addNew(obj) {
-        let user = new User(obj.name || null, obj.age || null, obj.cnic || null, obj.dob|| null);
+        let user = new User(obj.name || null, obj.age || null, obj.cnic || null, obj.dob || null, obj.contact || null, obj.address || null);
         await coll.insertOne(user, (err) => {
             assert.strictEqual(err, null);
         });
@@ -60,8 +60,10 @@ module.exports = class UserControllers {
             $set: {
                 name: obj.name,
                 dob: obj.dob,
-                cnic:obj.cnic,
-                age:obj.age
+                cnic: obj.cnic,
+                age: obj.age,
+                contact:obj.contact,
+                address:obj.address
             }
         }, (err, result) => {
             if (err) throw err;
