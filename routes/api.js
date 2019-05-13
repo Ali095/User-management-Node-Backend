@@ -1,6 +1,5 @@
 var express = require('express');
 const bodyParser = require('body-parser');
-const circularJson = require('circular-json');
 const userController = require('../controllers/userController');
 
 // create application/json parser
@@ -12,22 +11,23 @@ var router = express.Router();
 
 router.use((req,res,next)=>{
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
   next();
 });
 
 /* GET Users listing. */
-router.get('/users', async (req, res, next) => {
-  res.json(JSON.stringify(await user.getAll()));
+router.get('/users', async (req, res) => {
+  res.json(await user.getAll());
   console.log('Get all succesfully');
 });
 
 /* Get a single User */
-router.get('/user', async (req, res, next) => {
+router.get('/user', async (req, res) => {
   const singalUser = await user.getOne(req.query.id);
   if (!singalUser)
     res.status(404).json(`The User with ${ req.query.id } is not found`);
-  res.json(JSON.stringify(singalUser));
+  res.json(singalUser);
 });
 
 /* Post User */
@@ -43,7 +43,7 @@ router.put('/updateUser', jsonParser, async (req, res) => {
   if (!req.body)
     return res.status(400);
   await user.updateUser(req.body);
-  console.log('updated succesfully');
+   res.json('updated succesfully');
 });
 
 /* Delete a singal user */
